@@ -94,8 +94,10 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('blog:profile', kwargs={
-            'username': self.request.user.username})
+        return reverse(
+            'blog:profile',
+            kwargs={'username': self.request.user.username}
+        )
 
 
 class PostUpdateView(LoginRequiredMixin, UpdateView):
@@ -115,8 +117,10 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('blog:profile',
-                      kwargs={'username': self.request.user.username})
+        return reverse(
+            'blog:profile',
+            kwargs={'username': self.request.user.username}
+        )
 
 
 class PostDeleteView(LoginRequiredMixin, DeleteView):
@@ -136,8 +140,10 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
         return context
 
     def get_success_url(self):
-        return reverse('blog:profile', kwargs={
-            'username': self.request.user.username})
+        return reverse(
+            'blog:profile',
+            kwargs={'username': self.request.user.username}
+        )
 
 
 class UserDetailView(DetailView):
@@ -146,8 +152,10 @@ class UserDetailView(DetailView):
     context_object_name = 'profile'
 
     def get_object(self, queryset=None):
-        return get_object_or_404(get_user_model(),
-                                username=self.kwargs['username'])
+        return get_object_or_404(
+            get_user_model(),
+            username=self.kwargs['username']
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -178,8 +186,10 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
         return self.request.user
 
     def get_success_url(self):
-        return reverse('blog:profile',
-                      kwargs={'username': self.object.username})
+        return reverse(
+            'blog:profile',
+            kwargs={'username': self.object.username}
+        )
 
 
 class CommentMixin:
@@ -191,8 +201,10 @@ class CommentMixin:
         return get_object_or_404(Post, id=self.kwargs['post_id'])
 
     def get_success_url(self):
-        return reverse('blog:post_detail',
-                      kwargs={'post_id': self.get_post().id})
+        return reverse(
+            'blog:post_detail',
+            kwargs={'post_id': self.get_post().id}
+        )
 
 
 class EditCommentMixin(CommentMixin):
