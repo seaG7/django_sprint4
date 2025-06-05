@@ -50,8 +50,8 @@ class CategoryListView(PostsListsMixin, ListView):
         category = get_object_or_404(
             Category, slug=category_slug, is_published=True)
         return get_comment_count_queryset(
-            super().get_queryset().
-            filter(category=category)).order_by('-pub_date')
+            super().get_queryset().filter(category=category)
+        ).order_by('-pub_date')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -70,11 +70,9 @@ class PostDetailView(DetailView):
         now = timezone.now()
 
         if self.request.user != post.author:
-            if (
-                post.pub_date > now
-                or not post.is_published
-                or not post.category.is_published
-            ):
+            if (post.pub_date > now
+                    or not post.is_published
+                    or not post.category.is_published):
                 raise Http404("Публикация не найдена или недоступна.")
         return post
 
@@ -118,7 +116,7 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('blog:profile',
-                            kwargs={'username': self.request.user.username})
+                      kwargs={'username': self.request.user.username})
 
 
 class PostDeleteView(LoginRequiredMixin, DeleteView):
@@ -149,7 +147,7 @@ class UserDetailView(DetailView):
 
     def get_object(self, queryset=None):
         return get_object_or_404(get_user_model(),
-                                 username=self.kwargs['username'])
+                                username=self.kwargs['username'])
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -181,7 +179,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('blog:profile',
-                            kwargs={'username': self.object.username})
+                      kwargs={'username': self.object.username})
 
 
 class CommentMixin:
@@ -194,7 +192,7 @@ class CommentMixin:
 
     def get_success_url(self):
         return reverse('blog:post_detail',
-                            kwargs={'post_id': self.get_post().id})
+                      kwargs={'post_id': self.get_post().id})
 
 
 class EditCommentMixin(CommentMixin):
